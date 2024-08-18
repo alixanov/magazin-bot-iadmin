@@ -1,0 +1,29 @@
+.nav {
+     width: 100%;
+     height: 71px;
+     display: flex;
+     align-items: center;
+     justify-content: end;
+     background-color: #242627;
+     padding: 1% 2%;
+}
+
+.btn__add {
+     width: 181px;
+     height: 45px;
+     background-color: #C9B5A2;
+     color: #222222;
+     font-size: 17px;
+     border: none;
+     cursor: pointer;
+     border-radius: 8px;
+}
+
+.btn__add:hover {
+     background-color: #bda894;
+}
+
+.btn__add:active {
+     background-color: #aa9683;
+     transform: scale(.98);
+}

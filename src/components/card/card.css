@@ -1,0 +1,105 @@
+.big__card {
+     width: 100vw;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     flex-direction: column;
+}
+.card {
+     width: 100%;
+     display: flex;
+     align-items: start;
+     justify-content:start;
+     flex-wrap: wrap;
+     background-color: #242627;
+     padding: 2%;
+     gap: 13px;
+}
+
+.box {
+     width: 250px;
+     height: 450px;
+     background-color: white;
+     display: flex;
+     align-items: end;
+     justify-content:center;
+     gap: 7px;
+     text-align: end;
+     flex-direction: column;
+     border-radius: 8px;
+     padding: 1%;
+     transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.title__map {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+}
+.title__map > img {
+     width: 33px;
+}
+.title__map > p {
+     color: #463610;
+font-weight: 700;
+font-size: 22px;
+}
+.box:hover {
+     transform: translateY(-7px);
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);}
+
+.box>img {
+     width: 200px;
+     height: 200px;
+     background-color: slateblue;
+}
+
+.box>p {
+     color: #207ba9;
+     font-weight: 700;
+     font-size: 17px;
+}
+.box>span {
+     color: #C9B5A2;
+     font-weight: 700;
+     font-size: 22px;
+}
+.box > h5 {
+     font-size: 17px;
+     color: #222222ba;
+}
+.box > h4 {
+     color: #24262779;
+     font-weight: 400;
+     font-size: 20px;
+}
+
+.delete__create > button {
+   width: 100px;
+   height: 35px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   font-size: 14px;
+   font-weight: 600;
+   background-color: #f0edeb;
+   border: none;
+   cursor: pointer;
+   border-radius: 3px;
+}
+.delete__create>button:hover {
+     background-color: #2426273f;
+     transform: scale(.99);
+}
+@media (max-width: 480px) {
+ .card{
+          padding: 6%;
+ }
+     .box {
+          width: 400px;
+          height: 520px;
+          padding: 3%;
+     }
+          .box>img {
+               width: 290px;
+               min-height: 300px;
+          }}
