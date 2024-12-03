@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useForm } from 'react-hook-form';
+import { useForm, useFieldArray } from 'react-hook-form';
 import "./card.css";
 import DeleteIcon from '@mui/icons-material/Delete';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import CircularProgress from '@mui/material/CircularProgress';
-import Navbar from "../navbar/Navbar"
-import { Box, Button, Modal, TextField } from '@mui/material';
+import Navbar from "../navbar/Navbar";
+import { Box, Button, Modal, TextField, IconButton } from '@mui/material';
 
 const App = () => {
   const [data, setData] = useState([]);
@@ -14,7 +14,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [editProduct, setEditProduct] = useState(null);
   const [open, setOpen] = useState(false);
-  const { register, handleSubmit, setValue } = useForm(); // Подключаем react-hook-form
+  const { register, handleSubmit, setValue, control } = useForm(); // Подключаем react-hook-form и useFieldArray
 
   useEffect(() => {
     axios.get('https://magazin-bot-backend.vercel.app/api/getall')
@@ -57,6 +57,22 @@ const App = () => {
     setOpen(false);
   };
 
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "img"
+  });
+
+  useEffect(() => {
+    if (editProduct) {
+      while (fields.length < editProduct.img.length) {
+        append("");
+      }
+      editProduct.img.forEach((image, index) => {
+        setValue(`img[${index}]`, image);
+      });
+    }
+  }, [editProduct, append, fields.length, setValue]);
+
   const handleUpdate = (updatedProduct) => {
     axios.put(`https://magazin-bot-backend.vercel.app/api/update/${editProduct._id}`, updatedProduct)
       .then(response => {
@@ -70,12 +86,16 @@ const App = () => {
 
   return (
     <div className="big__card">
-      <Navbar/>
+      <Navbar />
       <hr />
       <div className='card'>
         {data.map((item, index) => (
           <div className="box" key={index}>
-            <img src={item.img} alt={item.nameproduct} className="product-image" />
+            {item.img && item.img.length > 0 ? (
+              <img src={item.img[0]} alt={item.nameproduct} className="product-image" />
+            ) : (
+              <p>Изображение не доступно</p>
+            )}
             <div className="title__map">
               <img src={item.swiperuchun} alt="" />
               <p>{item.titleProduct}</p>
@@ -115,12 +135,22 @@ const App = () => {
                   margin="normal"
                   required
                 />
-                <TextField
-                  {...register("img")}
-                  label="Добавить URL изображения"
-                  fullWidth
-                  margin="normal"
-                />
+                {fields.map((item, index) => (
+                  <div key={item.id}>
+                    <TextField
+                      {...register(`img[${index}]`)}
+                      label={`Добавить URL изображения ${index + 1}`}
+                      fullWidth
+                      margin="normal"
+                    />
+                    <IconButton onClick={() => remove(index)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </div>
+                ))}
+                <Button type="button" onClick={() => append("")}>
+                  Добавить изображение
+                </Button>
                 <TextField
                   {...register("nameproduct")}
                   label="Главное название продукта *"
@@ -161,7 +191,7 @@ const App = () => {
           </Modal>
         )}
       </div>
- </div>
+    </div>
   );
 };
 

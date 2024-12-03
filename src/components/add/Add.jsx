@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import './add.css';
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
-import axios from "axios"
+import axios from "axios";
 import { useForm } from 'react-hook-form';
+
 const Add = ({ onClose }) => {
-  const { register, handleSubmit, reset } = useForm()
-
-
+  const { register, handleSubmit, reset } = useForm();
 
   const notyf = new Notyf({
     position: {
@@ -16,12 +15,14 @@ const Add = ({ onClose }) => {
     },
   });
 
-
-
   function send(data) {
     console.log(data);
     data.nechtaqolgani = Number(data.nechtaqolgani);
     data.price = Number(data.price);
+    // Собираем изображения в массив
+    data.img = [data.img1, data.img2].filter(url => url); // Фильтруем пустые значения
+    delete data.img1; // Удаляем временные поля
+    delete data.img2;
     axios.post("https://magazin-bot-backend.vercel.app/api/add/admin", data)
       .then(res => {
         notyf.success("Готово! Продукт теперь в каталоге.");
@@ -40,29 +41,29 @@ const Add = ({ onClose }) => {
         <span className='close' onClick={onClose}>&times;</span>
         <form onSubmit={handleSubmit(send)} className='form'>
           <input
-
             {...register("titleProduct")}
             type="text"
             placeholder='Общий название продукта *'
             required
           />
           <input
-
             {...register("swiperuchun")}
             type="text"
             placeholder='Икон для слайдера URL *'
             required
           />
           <input
-
-            {...register("img")}
+            {...register("img1")}
             type="text"
-            placeholder='Добавить URL изображения'
+            placeholder='Добавить URL изображения 1 *'
+            required
           />
-
-
           <input
-
+            {...register("img2")}
+            type="text"
+            placeholder='Добавить URL изображения 2'
+          />
+          <input
             {...register("nameproduct")}
             type="text"
             placeholder='Главная название продукта *'
